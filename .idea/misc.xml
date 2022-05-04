@@ -3,10 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Jakub/AndroidStudioProjects/HappyFeets/app/src/main/res/layout/activity_details.xml" value="0.21376656690893545" />
         <entry key="..\:/Users/Jakub/AndroidStudioProjects/HappyFeets/app/src/main/res/layout/activity_main.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/Jakub/AndroidStudioProjects/HappyFeets/app/src/main/res/layout/activity_main_large.xml" value="0.25" />
         <entry key="..\:/Users/Jakub/AndroidStudioProjects/HappyFeets/app/src/main/res/layout/activity_main_small.xml" value="0.27447916666666666" />
-        <entry key="..\:/Users/Jakub/AndroidStudioProjects/HappyFeets/app/src/main/res/layout/card_view.xml" value="0.264" />
+        <entry key="..\:/Users/Jakub/AndroidStudioProjects/HappyFeets/app/src/main/res/layout/card_view.xml" value="0.23076923076923078" />
+        <entry key="..\:/Users/Jakub/AndroidStudioProjects/HappyFeets/app/src/main/res/layout/fragment_details.xml" value="0.21758839528558477" />
         <entry key="..\:/Users/Jakub/AndroidStudioProjects/HappyFeets/app/src/main/res/layout/fragment_list.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/Jakub/AndroidStudioProjects/HappyFeets/app/src/main/res/layout/layout.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/Jakub/AndroidStudioProjects/HappyFeets/app/src/main/res/layout/list_element.xml" value="0.27447916666666666" />
