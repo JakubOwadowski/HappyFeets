@@ -1,21 +1,12 @@
 package com.example.happyfeets
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import getJsonDataFromAsset
-import org.json.JSONArray
-import org.json.JSONTokener
-import java.io.File
-import java.io.InputStream
-import java.net.URL
 
 class ListFragment : Fragment() {
 
@@ -32,13 +23,11 @@ class ListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val jsonFileString = getJsonDataFromAsset(this.requireContext(), "data.json")
-        val gson = Gson()
-        val listDataType = object : TypeToken<List<road>>() {}.type
-        val roads: List<road> = gson.fromJson(jsonFileString, listDataType)
-        for (i in 0 until roads.size) {
-            dataText = dataText.plus(roads[i].title)
-            dataDesc = dataDesc.plus(roads[i].desc)
+        val roadsDbHelper = RoadsDbHelper(this.context)
+        val data = roadsDbHelper.viewData()
+        for (i in data.indices) {
+            dataText = dataText.plus(data[i].title)
+            dataDesc = dataDesc.plus(data[i].desc)
         }
         recyclerView = view.findViewById(R.id.mainItemList)
         recyclerView?.layoutManager = LinearLayoutManager(activity)
