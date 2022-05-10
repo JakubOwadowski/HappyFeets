@@ -1,5 +1,6 @@
 package com.example.happyfeets
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -9,33 +10,32 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.fragment.app.activityViewModels
 
-class StoperFragment : Fragment() {
+class StopperFragment : Fragment() {
 
     private var textViewTimer: TextView? = null
     private var buttonStartStop: Button? = null
     private var buttonSaveTime: Button? = null
-    private var timerRunning = false
-    private var currentTime = 0
+    private var isRunning = false
+    private var currentTime= 0
+    private var textTitle = ""
+    private val stopperViewModel: StopperViewModel by activityViewModels()
     lateinit var mainHandler: Handler
+    private var aaaaaa = 0
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    /* override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-    }
+    }*/
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (savedInstanceState != null) {
-            currentTime = savedInstanceState.getInt("CURRENT_TIME")
-            timerRunning = savedInstanceState.getBoolean("IS_RUNNING")
-        }
-
         textViewTimer = view.findViewById(R.id.textViewStoperFragment)
         buttonStartStop = view.findViewById(R.id.buttonStartStop)
         buttonStartStop?.setOnClickListener() {
-            timerRunning = !timerRunning
-            if (timerRunning) {
+            isRunning = !isRunning
+            if (isRunning) {
                 currentTime = 0
                 changeTimer()
             } else {
@@ -46,6 +46,7 @@ class StoperFragment : Fragment() {
         buttonSaveTime = view.findViewById(R.id.buttonSaveTime)
         buttonSaveTime?.setOnClickListener() {
             val timeDbHelper: TimeDbHelper = TimeDbHelper(this.context)
+
         }
         mainHandler = Handler(Looper.getMainLooper())
     }
@@ -55,7 +56,7 @@ class StoperFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_stoper, container, false)
+        return inflater.inflate(R.layout.fragment_stopper, container, false)
     }
 
     override fun onResume() {
@@ -68,15 +69,11 @@ class StoperFragment : Fragment() {
         mainHandler.removeCallbacks(handleTimer)
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putInt("CURRENT_TIME", currentTime)
-        outState.putBoolean("IS_RUNNING", timerRunning)
-    }
-
     private val handleTimer = object : Runnable {
         override fun run() {
-            if (timerRunning) currentTime++
+            if (isRunning) currentTime++
+            stopperViewModel.currentTime(currentTime)
+            stopperViewModel.isRunning(isRunning)
             changeTimer()
             mainHandler.postDelayed(this, 1000)
         }
@@ -90,10 +87,30 @@ class StoperFragment : Fragment() {
         val seconds: Int = currentTime % 60
         val secondsStr = if (seconds < 10) "0$seconds" else seconds.toString()
         ("$hoursStr:$minutesStr:$secondsStr").also { textViewTimer?.text = it }
-        if (timerRunning) {
+        if (isRunning) {
             buttonStartStop?.text = getString(R.string.stop_button)
         } else {
             buttonSaveTime?.text = getString(R.string.start_button)
         }
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(title: String?, currentTime: Int, isRunning: Boolean?): StopperFragment = StopperFragment().apply {
+            arguments = Bundle().apply {
+                putString("TITLE", title)
+                putInt("CURRENT_TIME", currentTime)
+                if (isRunning != null) {
+                    putBoolean("IS_RUNNING", isRunning)
+                }
+            }
+        }
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        textTitle = arguments?.getString("TITLE").toString()
+        currentTime = arguments?.getInt("CURRENT_TIME")!!
+        isRunning = arguments?.getBoolean("IS_RUNNING")!!
     }
 }
